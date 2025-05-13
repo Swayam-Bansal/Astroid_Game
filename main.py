@@ -39,6 +39,13 @@ def main():
         for elemenets in updatable:
             elemenets.update(dt)
 
+        for elemenets in asteroids:
+            if elemenets.check_collision(player):
+                print("Collision detected!")
+                print("GAME OVER")
+                pygame.quit()
+                return
+
         for elemenets in drawable:
             elemenets.draw(screen)
 
