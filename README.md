@@ -60,9 +60,6 @@ python main.py
 * Avoid collisions with asteroids and survive as long as possible.
 * Aim for a high score by destroying asteroids.
 
-## 📸 Screenshots
-
-*(Optional: Insert screenshots of your gameplay here to enhance visual appeal.)*
 
 ## 📝 Contribution
 
