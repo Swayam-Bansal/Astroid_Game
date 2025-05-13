@@ -5,14 +5,31 @@ from player import Player, Shot
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 
-def main():
-    print("Starting Asteroids!")
-    print("Screen width:", SCREEN_WIDTH)
-    print("Screen height:", SCREEN_HEIGHT)
+def Title_Screen(screen):
+    while True:
+         # Fill the screen with black
+        screen.fill((0, 0, 0))
 
-    pygame.init()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        # Draw the title screen text
+        font = pygame.font.Font("assets/fonts/staubach/Staubach.ttf", 74)
+        text = font.render("Asteroids", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        screen.blit(text, text_rect)
+        
+        # check for any events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            
+            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                game_loop(screen)
+                return
+            
+        # Update the display
+        pygame.display.flip()
 
+def game_loop(screen):
     clock = pygame.time.Clock()
     dt = 0
 
@@ -34,6 +51,12 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
+            
+            # on pressing escape, go back to title screen
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE]:
+                Title_Screen(screen)
+                return
 
         # Fill the screen with black
         screen.fill((0, 0, 0))
@@ -54,21 +77,6 @@ def main():
                     # elemenets.kill()
                     elemenets.split()
                     bullet.kill()
-            
-        # for i in range(len(asteroids)):
-        #     for j in range(i + 1, len(asteroids)):
-        #         if asteroids[i].check_collision(asteroids[j]):
-        #             print("Collision detected between asteroids!")
-        #             asteroids[i].kill()
-        #             asteroids[j].kill()
-        #             # Handle asteroid collision here
-
-        #     for bullet in bullets:
-        #         if asteroids[i].check_collision(bullet):
-        #             print("Collision detected between asteroid and shot!")
-        #             # Handle asteroid and shot collision here
-        #             asteroids[i].kill()
-        #             bullet.kill()
 
         for elemenets in drawable:
             elemenets.draw(screen)
@@ -77,6 +85,21 @@ def main():
         pygame.display.flip()
 
         dt = clock.tick(60)/1000
+
+
+def main():
+    print("Starting Asteroids!")
+    print("Screen width:", SCREEN_WIDTH)
+    print("Screen height:", SCREEN_HEIGHT)
+
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Asteroids")
+    pygame.mouse.set_visible(False)
+
+    Title_Screen(screen)
+    game_loop(screen)
+
 
 if __name__ == "__main__":
     main()
