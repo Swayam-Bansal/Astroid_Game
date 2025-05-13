@@ -11,10 +11,20 @@ def Title_Screen(screen):
         screen.fill((0, 0, 0))
 
         # Draw the title screen text
-        font = pygame.font.Font("assets/fonts/staubach/Staubach.ttf", 74)
-        text = font.render("Asteroids", True, (255, 255, 255))
-        text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        font_title = pygame.font.Font("assets/fonts/staubach/Staubach.ttf", 94)
+        text = font_title.render("Asteroids", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 90))
+
+        font_options = pygame.font.Font("assets/fonts/staubach/Staubach.ttf", 40)
+
+        text_options = font_options.render("Press any key to start playing", True, (255, 255, 255))
+        text_rect_options = text_options.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        # text_options2 = font_options.render("Quit", True, (255, 255, 255))
+        # text_rect_options2 = text_options2.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
+        
         screen.blit(text, text_rect)
+        screen.blit(text_options, text_rect_options)
+        # screen.blit(text_options2, text_rect_options2)
         
         # check for any events
         for event in pygame.event.get():
@@ -28,6 +38,33 @@ def Title_Screen(screen):
             
         # Update the display
         pygame.display.flip()
+
+
+def end_game(screen):
+    while True:
+         # Fill the screen with black
+        screen.fill((0, 0, 0))
+
+        # Draw the title screen text
+        font_title = pygame.font.Font("assets/fonts/staubach/Staubach.ttf", 94)
+        text = font_title.render("Game Over", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 40))
+
+        screen.blit(text, text_rect)
+
+        # check for any events
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            
+            elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
+                Title_Screen(screen)
+                return
+            
+        # Update the display
+        pygame.display.flip()
+
 
 def game_loop(screen):
     clock = pygame.time.Clock()
@@ -68,7 +105,8 @@ def game_loop(screen):
             if elemenets.check_collision(player):
                 print("Collision detected!")
                 print("GAME OVER")
-                pygame.quit()
+                end_game(screen)
+                # pygame.quit()
                 return
             
             for bullet in bullets:
@@ -95,7 +133,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Asteroids")
-    pygame.mouse.set_visible(False)
+    # pygame.mouse.set_visible(False)
 
     Title_Screen(screen)
     game_loop(screen)
