@@ -27,6 +27,7 @@ def main():
         screen.fill((0, 0, 0))
 
         # draw the player
+        player.update(dt)
         player.draw(screen)
 
         # update the whole screen
