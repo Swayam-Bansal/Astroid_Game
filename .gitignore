@@ -1,0 +1,5 @@
+# virtuial environment
+astroid_game
+
+# Python cache
+__pycache__/
