@@ -69,6 +69,7 @@ def end_game(screen):
 def game_loop(screen):
     clock = pygame.time.Clock()
     dt = 0
+    score = 0
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -82,6 +83,11 @@ def game_loop(screen):
 
     player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     asteroid_field = AsteroidField()
+
+    font_score = pygame.font.Font("assets/fonts/staubach/Staubach.ttf", 40)
+    text_score = font_score.render("Score: " + str(score), True, (255, 255, 255))
+    text_rect_score = text_score.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 300))
+    screen.blit(text_score, text_rect_score)
 
     while True:
         for event in pygame.event.get():
@@ -115,6 +121,11 @@ def game_loop(screen):
                     # elemenets.kill()
                     elemenets.split()
                     bullet.kill()
+                    score += 10
+
+        text_score = font_score.render("Score: " + str(score), True, (255, 255, 255))
+        text_rect_score = text_score.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 300))
+        screen.blit(text_score, text_rect_score)
 
         for elemenets in drawable:
             elemenets.draw(screen)
