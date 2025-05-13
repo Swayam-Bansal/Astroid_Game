@@ -70,6 +70,7 @@ def game_loop(screen):
     clock = pygame.time.Clock()
     dt = 0
     score = 0
+    lives = NUMBER_OF_LIVES
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -84,10 +85,16 @@ def game_loop(screen):
     player = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
     asteroid_field = AsteroidField()
 
+    # draw the score on the screen
     font_score = pygame.font.Font("assets/fonts/staubach/Staubach.ttf", 40)
-    text_score = font_score.render("Score: " + str(score), True, (255, 255, 255))
-    text_rect_score = text_score.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 300))
-    screen.blit(text_score, text_rect_score)
+    # text_score = font_score.render("Score: " + str(score), True, (255, 255, 255))
+    # text_rect_score = text_score.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 300))
+    # screen.blit(text_score, text_rect_score)
+
+    font_lives = pygame.font.Font("assets/fonts/staubach/Staubach.ttf", 40)
+    # text_lives = font_lives.render("Lives: " + str(lives), True, (255, 255, 255))
+    # text_rect_lives = text_lives.get_rect(center=(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 300))
+    # screen.blit(text_lives, text_rect_lives)
 
     while True:
         for event in pygame.event.get():
@@ -109,11 +116,16 @@ def game_loop(screen):
 
         for elemenets in asteroids:
             if elemenets.check_collision(player):
-                print("Collision detected!")
-                print("GAME OVER")
-                end_game(screen)
-                # pygame.quit()
-                return
+                if lives > 1:
+                    print("Collision detected!")
+                    print("Respwan")
+                    lives -= 1
+                    elemenets.kill()
+                
+                else:
+                    end_game(screen)
+                    # pygame.quit()
+                    return
             
             for bullet in bullets:
                 if elemenets.check_collision(bullet):
@@ -121,11 +133,15 @@ def game_loop(screen):
                     # elemenets.kill()
                     elemenets.split()
                     bullet.kill()
-                    score += 10
+                    score += SCORE_INCREMENT
 
         text_score = font_score.render("Score: " + str(score), True, (255, 255, 255))
         text_rect_score = text_score.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 300))
         screen.blit(text_score, text_rect_score)
+
+        text_lives = font_lives.render("Lives: " + str(lives), True, (255, 255, 255))
+        text_rect_lives = text_lives.get_rect(center=(SCREEN_WIDTH // 2 - 250, SCREEN_HEIGHT // 2 - 300))
+        screen.blit(text_lives, text_rect_lives)
 
         for elemenets in drawable:
             elemenets.draw(screen)
